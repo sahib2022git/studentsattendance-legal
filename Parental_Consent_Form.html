@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parental Consent Form — StudentsAttendanceApp</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── COVER ── */
+    .cover {
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+      color: #fff;
+      padding: 52px 40px 42px;
+      text-align: center;
+    }
+    .cover .icon { font-size: 2.8rem; margin-bottom: 10px; }
+    .cover h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
+    .cover .doc-title {
+      font-size: 1.15rem; font-weight: 700; color: #6ee7b7;
+      margin-top: 6px;
+    }
+    .cover .badges {
+      margin-top: 18px; display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .cover .badge {
+      display: inline-block; background: #059669; color: #fff;
+      padding: 5px 16px; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .cover .badge.dark { background: rgba(255,255,255,0.12); }
+
+    /* ── LAYOUT ── */
+    .wrapper { max-width: 820px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    /* ── NOTICE / INFO BOXES ── */
+    .notice-box {
+      background: #fef3c7; border-left: 4px solid #f59e0b;
+      padding: 14px 18px; border-radius: 6px; margin-bottom: 28px;
+      font-size: 0.88rem; color: #78350f;
+    }
+    .notice-box strong { display: block; margin-bottom: 4px; }
+    .info-box {
+      background: #ecfdf5; border: 1px solid #6ee7b7;
+      padding: 13px 17px; border-radius: 6px; margin: 14px 0;
+      font-size: 0.9rem; color: #065f46;
+    }
+    .warning-box {
+      background: #fef2f2; border: 1px solid #fecaca;
+      padding: 13px 17px; border-radius: 6px; margin: 14px 0;
+      font-size: 0.9rem; color: #991b1b;
+    }
+
+    /* ── SECTION BLOCKS ── */
+    .section-block {
+      background: #fff; border: 1px solid #d1fae5;
+      border-radius: 10px; padding: 26px 28px 30px;
+      margin-bottom: 18px;
+    }
+    .section-block.form-block {
+      border-color: #a7f3d0;
+      border-top: 4px solid #059669;
+    }
+    .section-block.consent-block {
+      border-color: #fde68a;
+      border-top: 4px solid #d97706;
+    }
+    .section-block.sign-block {
+      border-color: #c7d2fe;
+      border-top: 4px solid #4f46e5;
+    }
+
+    h2 {
+      font-size: 1.1rem; font-weight: 800; color: #064e3b;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 2px solid #d1fae5;
+      display: flex; align-items: center; gap: 8px;
+    }
+    h2 .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #059669; color: #fff;
+      font-size: 0.72rem; font-weight: 800;
+      width: 24px; height: 24px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── FORM FIELDS ── */
+    .field-row {
+      display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .field {
+      flex: 1; min-width: 220px;
+    }
+    .field.full { flex: 100%; min-width: 100%; }
+    label {
+      display: block; font-size: 0.82rem; font-weight: 700;
+      color: #374151; margin-bottom: 5px; text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    label .req { color: #dc2626; margin-left: 2px; }
+    .field-input {
+      width: 100%;
+      border: 1.5px solid #d1d5db; border-radius: 6px;
+      padding: 9px 13px; font-size: 0.95rem; color: #111827;
+      background: #f9fafb; outline: none;
+      font-family: inherit;
+    }
+    .field-input:focus { border-color: #059669; background: #fff; }
+    .field-input.line {
+      border: none; border-bottom: 1.5px solid #9ca3af;
+      border-radius: 0; background: transparent; padding: 6px 4px;
+    }
+    .hint { font-size: 0.78rem; color: #6b7280; margin-top: 4px; }
+
+    /* ── CONSENT CHECKLIST ── */
+    .consent-list { list-style: none; margin: 0; padding: 0; }
+    .consent-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid #fef3c7;
+      font-size: 0.92rem; color: #374151;
+    }
+    .consent-list li:last-child { border-bottom: none; }
+    .consent-list li .cb-wrap {
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .consent-list li input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: #059669; cursor: pointer;
+    }
+    .consent-list li strong { color: #064e3b; }
+
+    /* ── DECLARATION BOX ── */
+    .declaration {
+      background: #f0fdf4; border: 1px solid #6ee7b7;
+      border-radius: 8px; padding: 18px 20px; margin: 20px 0;
+      font-size: 0.9rem; color: #065f46; line-height: 1.8;
+    }
+    .declaration strong { display: block; font-size: 0.95rem; margin-bottom: 6px; }
+
+    /* ── SIGNATURE AREA ── */
+    .sig-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 10px;
+    }
+    @media (max-width: 560px) { .sig-grid { grid-template-columns: 1fr; } }
+    .sig-box label { margin-bottom: 8px; }
+    .sig-line {
+      border-bottom: 1.5px solid #374151; height: 42px; margin-top: 4px;
+    }
+    .sig-date-line {
+      border-bottom: 1.5px solid #374151; height: 42px;
+      margin-top: 4px; max-width: 200px;
+    }
+
+    /* ── WITNESS SECTION ── */
+    .witness-note {
+      font-size: 0.82rem; color: #6b7280; margin-top: 20px;
+      padding-top: 14px; border-top: 1px dashed #d1d5db;
+    }
+
+    /* ── FOR OFFICE USE ── */
+    .office-block {
+      background: #f8fafc; border: 1.5px dashed #cbd5e1;
+      border-radius: 8px; padding: 18px 20px; margin-top: 10px;
+    }
+    .office-block h3 {
+      font-size: 0.82rem; font-weight: 800; color: #475569;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;
+    }
+    .office-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 560px) { .office-grid { grid-template-columns: 1fr; } }
+    .office-field label { color: #475569; }
+    .office-field .field-input.line { border-bottom-color: #94a3b8; }
+
+    /* ── FOOTER ── */
+    .footer-note {
+      text-align: center; margin-top: 40px; padding: 22px 28px;
+      background: #0f172a; color: #6ee7b7; border-radius: 10px;
+      font-size: 0.82rem; line-height: 1.9;
+    }
+    .footer-note strong { color: #fff; }
+    .doc-links {
+      display: flex; gap: 12px; margin: 24px 0; flex-wrap: wrap;
+    }
+    .doc-link {
+      flex: 1; text-align: center; padding: 12px;
+      background: #ede9fe; border-radius: 8px;
+      color: #5b21b6; font-weight: 700; font-size: 0.88rem;
+      text-decoration: none; border: 1px solid #c4b5fd;
+      min-width: 180px;
+    }
+    .doc-link:hover { background: #ddd6fe; }
+    .doc-link.green {
+      background: #ecfdf5; color: #065f46;
+      border-color: #6ee7b7;
+    }
+    .doc-link.green:hover { background: #d1fae5; }
+
+    @media print {
+      body { background: #fff; }
+      .doc-links, .footer-note { display: none; }
+      .section-block { box-shadow: none; border: 1px solid #ccc; }
+      .cover { background: #064e3b !important; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- COVER                                                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="icon">👨‍👧</div>
+  <h1>StudentsAttendanceApp</h1>
+  <div class="doc-title">Parental / Guardian Consent Form</div>
+  <div class="badges">
+    <span class="badge">Effective Date: 18/07/2026</span>
+    <span class="badge dark">Version 1.0</span>
+    <span class="badge dark">For Children Under 18 Years</span>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- LEGAL CONTEXT -->
+  <div class="notice-box">
+    <strong>⚠️ Legal Basis for This Form</strong>
+    Digital Personal Data Protection (DPDP) Act, 2023 — Section 9 &nbsp;·&nbsp;
+    DPDP Rules, 2025 &nbsp;·&nbsp;
+    IT Act, 2000 &nbsp;·&nbsp;
+    IT (SPDI) Rules, 2011<br>
+    <span style="margin-top:5px; display:block;">
+      Under the DPDP Act, 2023, personal data of any individual below 18 years of age may only be
+      processed after obtaining <strong>verifiable consent from a parent or lawful guardian</strong>.
+      This form records that consent.
+    </span>
+  </div>
+
+  <!-- ══ SECTION 1 — STUDENT DETAILS ══ -->
+  <div class="section-block form-block">
+    <h2><span class="num">1</span> Student Details</h2>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Full Name of Student <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="As per school records" />
+      </div>
+      <div class="field">
+        <label>Date of Birth <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="DD / MM / YYYY" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Age at Time of Registration <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="e.g. 14 years" />
+      </div>
+      <div class="field">
+        <label>Class / Grade <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="e.g. Class 9 – Section A" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Roll Number</label>
+        <input class="field-input" type="text" placeholder="As assigned by school" />
+      </div>
+      <div class="field">
+        <label>School Name <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="Full name of the school" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field full">
+        <label>Student's Email Address (used for App login)</label>
+        <input class="field-input" type="email" placeholder="student@example.com  (leave blank if not applicable)" />
+        <div class="hint">This is the email address registered on StudentsAttendanceApp for the student's account.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2 — PARENT / GUARDIAN DETAILS ══ -->
+  <div class="section-block form-block">
+    <h2><span class="num">2</span> Parent / Guardian Details</h2>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Full Name of Parent / Guardian <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="Full legal name" />
+      </div>
+      <div class="field">
+        <label>Relationship to Student <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="e.g. Father / Mother / Legal Guardian" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Mobile Number <span class="req">*</span></label>
+        <input class="field-input" type="tel" placeholder="+91 XXXXX XXXXX" />
+        <div class="hint">This is the parent mobile number stored in the App for the student's record.</div>
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input class="field-input" type="email" placeholder="parent@example.com (optional)" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field full">
+        <label>Residential Address <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="Full address including city, state, PIN code" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>ID Proof Type <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="e.g. Aadhaar / PAN / Passport / Voter ID" />
+      </div>
+      <div class="field">
+        <label>ID Proof Number <span class="req">*</span></label>
+        <input class="field-input" type="text" placeholder="Last 4 digits only e.g. XXXX-1234" />
+        <div class="hint">For privacy, record only the last 4 digits. Do not write the full ID number here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3 — CONSENT DECLARATIONS ══ -->
+  <div class="section-block consent-block">
+    <h2 style="color:#92400e; border-bottom-color:#fde68a;"><span class="num" style="background:#d97706;">3</span> Consent Declarations</h2>
+
+    <div class="info-box">
+      Please read each item carefully. Tick the checkbox next to each point to confirm your understanding and consent.
+      All items are mandatory. This form is not valid unless all boxes are checked.
+    </div>
+
+    <ul class="consent-list">
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Identity &amp; Authority:</strong>
+          I confirm that I am the parent / lawful guardian of the student named in Section 1,
+          and I am legally authorised to provide consent on their behalf under Indian law.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Age Confirmation:</strong>
+          I confirm that the student is below 18 years of age at the time of this registration,
+          and therefore this parental consent is required before any personal data is processed.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Data Collection — Student:</strong>
+          I consent to StudentsAttendanceApp collecting and storing the following data about my child:
+          full name, roll number, class, section, date-wise attendance records (Present / Absent / Late),
+          and the email address used for login.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Data Collection — Parent Contact:</strong>
+          I consent to my mobile phone number being stored in the App as a parent contact linked
+          to my child's attendance record. This number may be used by the school to communicate
+          attendance-related information to me.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Purpose of Processing:</strong>
+          I understand that my child's data will be used <em>exclusively</em> for school attendance
+          management — to mark, view, and report attendance. It will not be used for advertising,
+          profiling, AI/ML training, or any commercial purpose.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Data Storage &amp; Security:</strong>
+          I understand that data is stored on Supabase (a secure cloud database provider) and is
+          encrypted in transit (HTTPS) and at rest. Access to my child's data is restricted to
+          authorised Teachers and the School Principal only.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>No Sharing with Third Parties:</strong>
+          I understand that my child's personal data will not be sold, rented, or shared with
+          any third party for commercial purposes. It is shared with Razorpay (payment processing)
+          and Supabase/Render.com (infrastructure) only as required to operate the Service,
+          under contractual data protection obligations.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Cross-Border Transfer:</strong>
+          I understand that data may be stored on servers located outside India (USA/EU) via
+          Supabase's infrastructure, under appropriate safeguards, and I consent to this transfer.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Data Retention:</strong>
+          I understand that my child's data will be retained for the duration of the school's
+          active subscription and deleted within 90 days of account closure, unless a longer
+          retention period is required by Indian law.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>My Rights (DPDP Act, 2023):</strong>
+          I understand that I have the right to access, correct, or request deletion of my child's
+          personal data at any time by contacting the Grievance Officer at
+          <strong>studentsattendanceapp@gmail.com</strong>.
+          Requests will be processed within 30 days.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Withdrawal of Consent:</strong>
+          I understand that I may withdraw this consent at any time by submitting a written request
+          to the school or to studentsattendanceapp@gmail.com. Withdrawal will result in my child's
+          account and data being removed within 30 days. Withdrawal does not affect the lawfulness
+          of processing done before withdrawal.
+        </div>
+      </li>
+
+      <li>
+        <div class="cb-wrap"><input type="checkbox" /></div>
+        <div>
+          <strong>Terms &amp; Privacy Policy:</strong>
+          I confirm that I have read and agree to the
+          <strong>Terms &amp; Conditions</strong> and <strong>Privacy Policy</strong> of
+          StudentsAttendanceApp (available at the school office or online), and I agree that
+          these documents govern the use of the App on behalf of my child.
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 4 — DECLARATION & SIGNATURE ══ -->
+  <div class="section-block sign-block">
+    <h2 style="color:#312e81; border-bottom-color:#c7d2fe;"><span class="num" style="background:#4f46e5;">4</span> Declaration &amp; Signature</h2>
+
+    <div class="declaration">
+      <strong>I, the undersigned, hereby declare that:</strong>
+      I am the parent / lawful guardian of the student named in this form. I have read, understood,
+      and voluntarily agree to all the consent declarations in Section 3 above. The information
+      provided in this form is true and accurate to the best of my knowledge. I understand that
+      providing false information may result in the student's account being suspended.
+    </div>
+
+    <div class="sig-grid">
+      <div class="sig-box">
+        <label>Signature of Parent / Guardian <span class="req">*</span></label>
+        <div class="sig-line"></div>
+        <div class="hint" style="margin-top:6px;">Sign above in ink</div>
+      </div>
+      <div class="sig-box">
+        <label>Date of Signing <span class="req">*</span></label>
+        <div class="sig-date-line"></div>
+        <div class="hint" style="margin-top:6px;">DD / MM / YYYY</div>
+      </div>
+    </div>
+
+    <div class="sig-grid" style="margin-top:24px;">
+      <div class="sig-box">
+        <label>Name (Print Clearly) <span class="req">*</span></label>
+        <div class="sig-line"></div>
+      </div>
+      <div class="sig-box">
+        <label>Place of Signing <span class="req">*</span></label>
+        <div class="sig-line"></div>
+      </div>
+    </div>
+
+    <div class="witness-note">
+      <strong>Witness (Optional but Recommended):</strong>
+      A witness signature strengthens the legal enforceability of this consent form, especially
+      in the event of a future dispute.<br><br>
+      <div class="sig-grid">
+        <div class="sig-box">
+          <label>Witness Name</label>
+          <div class="sig-line"></div>
+        </div>
+        <div class="sig-box">
+          <label>Witness Signature &amp; Date</label>
+          <div class="sig-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 5 — FOR SCHOOL/OFFICE USE ══ -->
+  <div class="section-block" style="border-top: 4px solid #64748b;">
+    <h2 style="color:#334155; border-bottom-color:#e2e8f0;"><span class="num" style="background:#64748b;">5</span> For School / Office Use Only</h2>
+
+    <div class="office-block">
+      <h3>🏫 To be filled by the School Principal or Authorised Staff</h3>
+      <div class="office-grid">
+        <div class="office-field">
+          <label>Received By (Name)</label>
+          <input class="field-input line" type="text" />
+        </div>
+        <div class="office-field">
+          <label>Designation</label>
+          <input class="field-input line" type="text" />
+        </div>
+        <div class="office-field">
+          <label>Date Received</label>
+          <input class="field-input line" type="text" placeholder="DD / MM / YYYY" />
+        </div>
+        <div class="office-field">
+          <label>Form Reference No.</label>
+          <input class="field-input line" type="text" placeholder="e.g. PCF-2026-001" />
+        </div>
+        <div class="office-field">
+          <label>Student Account Created on App</label>
+          <input class="field-input line" type="text" placeholder="DD / MM / YYYY" />
+        </div>
+        <div class="office-field">
+          <label>Verified by Principal</label>
+          <input class="field-input line" type="text" placeholder="Signature / Initials" />
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <label style="font-size:0.82rem; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;">
+          Notes / Remarks
+        </label>
+        <div style="border:1.5px solid #cbd5e1; border-radius:6px; height:60px; margin-top:6px; background:#fff;"></div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:16px;">
+      <strong>📁 Record Keeping:</strong> This signed form must be retained by the school in physical or scanned
+      digital form for a minimum of <strong>3 years</strong> or until the student's account is permanently closed,
+      whichever is later. A copy should be provided to the parent upon request.
+    </div>
+  </div>
+
+  <!-- LINKS TO OTHER DOCS -->
+  <div class="doc-links">
+    <a class="doc-link" href="Terms_and_Conditions.html">📋 Terms &amp; Conditions →</a>
+    <a class="doc-link green" href="Privacy_Policy.html">🔒 Privacy Policy →</a>
+  </div>
+
+  <div class="footer-note">
+    <strong>⚠️ Legal Disclaimer</strong><br>
+    This Parental Consent Form is drafted in accordance with Section 9 of the Digital Personal Data Protection
+    Act, 2023, the DPDP Rules 2025, and the IT (SPDI) Rules, 2011. It is intended as a practical
+    starting document for schools using StudentsAttendanceApp.<br><br>
+    <strong>Schools are advised to have this form reviewed by their legal counsel before mandatory distribution
+    to parents.</strong> The form may need adaptation based on individual school policies or state-specific
+    regulations. This document does not constitute legal advice.
+  </div>
+
+</div>
+</body>
+</html>
