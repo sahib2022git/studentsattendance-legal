@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Your Account — Attendance Desk</title>
+  <meta name="description" content="How to delete your Attendance Desk account (principal, teacher or student), and what data is deleted or kept." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .cover {
+      background: linear-gradient(135deg, #0F172A 0%, #1e3a5f 100%);
+      color: #fff;
+      padding: 56px 40px 44px;
+      text-align: center;
+    }
+    .cover h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+    .cover .doc-title {
+      font-size: 1.25rem; font-weight: 700; color: #93c5fd;
+      margin-top: 6px; letter-spacing: 0.5px;
+    }
+    .cover .badges { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cover .badge {
+      display: inline-block;
+      background: #2563eb; color: #fff;
+      padding: 5px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+    }
+    .cover .badge.dark { background: rgba(255,255,255,0.12); }
+    .toc-bar {
+      background: #fff;
+      border-bottom: 2px solid #dbeafe;
+      padding: 14px 40px;
+      display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+    }
+    .toc-bar span { font-size: 0.78rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .toc-bar a {
+      color: #2563eb; font-weight: 600; font-size: 0.85rem;
+      text-decoration: none; white-space: nowrap;
+    }
+    .toc-bar a:hover { text-decoration: underline; }
+    .wrapper { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+    .notice-box {
+      background: #fef3c7; border-left: 4px solid #f59e0b;
+      padding: 14px 18px; border-radius: 6px; margin-bottom: 32px;
+      font-size: 0.88rem; color: #78350f;
+    }
+    .notice-box strong { display: block; margin-bottom: 4px; font-size: 0.9rem; }
+    h3 {
+      font-size: 1.05rem; font-weight: 700; color: #0f172a;
+      margin-top: 32px; margin-bottom: 10px;
+      padding-left: 13px; border-left: 3px solid #2563eb;
+    }
+    h3:first-of-type { margin-top: 0; }
+    p { margin-bottom: 12px; color: #374151; }
+    ul { margin: 8px 0 14px 20px; }
+    ul li { margin-bottom: 7px; color: #374151; }
+    .section-num {
+      display: inline-block; background: #2563eb; color: #fff;
+      font-size: 0.68rem; font-weight: 800; width: 21px; height: 21px;
+      border-radius: 50%; text-align: center; line-height: 21px;
+      margin-right: 8px; vertical-align: middle;
+    }
+    .highlight-box {
+      background: #f0fdf4; border: 1px solid #bbf7d0;
+      padding: 13px 17px; border-radius: 6px; margin: 14px 0;
+      font-size: 0.9rem; color: #166534;
+    }
+    .warning-box {
+      background: #fef2f2; border: 1px solid #fecaca;
+      padding: 13px 17px; border-radius: 6px; margin: 14px 0;
+      font-size: 0.9rem; color: #991b1b;
+    }
+    .info-box {
+      background: #eff6ff; border: 1px solid #bfdbfe;
+      padding: 13px 17px; border-radius: 6px; margin: 14px 0;
+      font-size: 0.9rem; color: #1e40af;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin: 14px 0 20px;
+      font-size: 0.88rem;
+    }
+    th { background: #0f172a; color: #fff; padding: 10px 14px; text-align: left; }
+    td { padding: 9px 14px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .section-block {
+      background: #fff; border: 1px solid #dbeafe;
+      border-radius: 10px; padding: 28px 30px 32px;
+      margin-bottom: 18px;
+    }
+    .grievance-block {
+      background: #fff; border: 1px solid #d1fae5;
+      border-top: 4px solid #065f46;
+      border-radius: 10px; padding: 28px 30px 32px;
+      margin-bottom: 18px;
+    }
+    .grievance-block h3 { border-left-color: #065f46; color: #065f46; }
+    .grievance-block .section-num { background: #065f46; }
+    .footer-note {
+      text-align: center; margin-top: 40px; padding: 22px 28px;
+      background: #0f172a; color: #93c5fd; border-radius: 10px;
+      font-size: 0.82rem; line-height: 1.9;
+    }
+    .footer-note strong { color: #fff; }
+    .tnc-link {
+      display: block; text-align: center; margin: 20px 0;
+      padding: 14px; background: #ede9fe; border-radius: 8px;
+      color: #5b21b6; font-weight: 700; font-size: 0.92rem;
+      text-decoration: none; border: 1px solid #c4b5fd;
+    }
+    .tnc-link:hover { background: #ddd6fe; }
+    @media print { .toc-bar { display: none; } body { background: #fff; } }
+  </style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>🗑️ Attendance Desk</h1>
+  <div class="doc-title">Delete Your Account</div>
+  <div class="badges">
+    <span class="badge">Android app: com.attendancedesk.mobile</span>
+    <span class="badge dark">Developer: Sahib Singh</span>
+  </div>
+</div>
+
+<div class="toc-bar">
+  <span>Jump to →</span>
+  <a href="#d1">In the app</a>
+  <a href="#d2">By email</a>
+  <a href="#d3">What is deleted</a>
+  <a href="#d4">What is kept</a>
+</div>
+
+<div class="wrapper">
+
+  <div class="section-block">
+
+    <h3 id="d1"><span class="section-num">1</span>Delete your account in the app (fastest)</h3>
+    <p>Every account can be deleted from inside the Attendance Desk app:</p>
+    <ul>
+      <li>Open the app and sign in.</li>
+      <li>Go to the <strong>Settings</strong> tab and scroll down to <strong>Danger Zone</strong>.</li>
+      <li>Principals tap <strong>Delete School Account</strong>. Teachers and students tap <strong>Delete My Account</strong>.</li>
+      <li>Tap <strong>Send Verification Code to My Email</strong>, enter the 6-digit code from your email, and confirm.</li>
+    </ul>
+    <div class="highlight-box">Deletion happens straight away and you are signed out. It cannot be undone.</div>
+
+    <h3 id="d2"><span class="section-num">2</span>Can't open the app? Ask us by email</h3>
+    <p>
+      If you can't sign in (for example, your account is still waiting for approval, or you no longer have the app),
+      email <strong>attendancestudentsapp@gmail.com</strong> <em>from the email address you registered with</em>, with the subject
+      <strong>"Account deletion — [your school name]"</strong>. Please include your name, your role (principal, teacher or student)
+      and your school code if you know it.
+    </p>
+    <ul>
+      <li>We reply within <strong>24 hours</strong> on business days, and may ask you to confirm the request from that email address.</li>
+      <li>Your account is deleted within <strong>30 days</strong>, and we email you when it is done.</li>
+    </ul>
+
+    <h3 id="d3"><span class="section-num">3</span>What is deleted</h3>
+    <table>
+      <tr><th>Account</th><th>Deleted</th></tr>
+      <tr>
+        <td>Teacher or student</td>
+        <td>Your login, your profile (name, email, school and class link, roll number for students), your record of accepting the Terms, and (for teachers) your assignment to classes.</td>
+      </tr>
+      <tr>
+        <td>Principal (whole school)</td>
+        <td>The principal's login and profile, every teacher and student account of the school, all classes and subjects, the class lists and all attendance records, and the school's Terms acceptance records. An auto-renewing Monthly Pro subscription is cancelled first, so you are not charged again.</td>
+      </tr>
+    </table>
+
+    <h3 id="d4"><span class="section-num">4</span>What is kept, and for how long</h3>
+    <ul>
+      <li><strong>Records that belong to the school.</strong> When a teacher or student deletes their own account, the school's class list and attendance records are not deleted, because the school keeps them. They are deleted when the principal deletes the school account, or within 90 days after the school account is closed. A student or parent can ask the principal to remove them sooner.</li>
+      <li><strong>Payment and invoice records</strong> (amount, date, payment reference — never card or UPI details) are kept for <strong>7 years</strong>, as Indian tax and accounting law requires.</li>
+      <li><strong>A note that a school account was deleted</strong> (school name, principal's name and email, date) is kept with those payment records, so billing questions can still be answered.</li>
+      <li><strong>Complaints sent to our Grievance Officer</strong> are kept as long as the law requires.</li>
+    </ul>
+    <div class="info-box">
+      More detail is in our <a href="Privacy_Policy.html">Privacy Policy</a> (sections 8 and 9).
+      Questions: <strong>attendancestudentsapp@gmail.com</strong>.
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
