@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renew Your Plan — AttendanceDesk App</title>
+<meta name="description" content="Principals can upgrade or renew their school's AttendanceDesk plan here: Annual Pro or Monthly Pro, paid securely through Razorpay.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+  :root{
+    --navy:#12173A; --navy-soft:#232A5C; --red:#B23A3A; --green:#1F7A4D; --gold:#C89B3C;
+    --paper:#FBFAF6; --paper-dim:#F1EEE4; --ink:#22252F; --ink-soft:#5B5F6E;
+    --line:rgba(18,23,58,0.10); --shadow:0 18px 40px -18px rgba(18,23,58,0.28); --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; color:var(--navy); letter-spacing:-0.01em;}
+  p{margin:0;}
+  a{color:var(--navy-soft);}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  header{background:rgba(251,250,246,0.92); border-bottom:1px solid var(--line);}
+  .navbar{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; max-width:960px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; color:var(--navy); text-decoration:none;}
+  .brand .mark{width:34px; height:34px; border-radius:9px; background:var(--navy); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:18px;}
+  main{max-width:960px; margin:0 auto; padding:36px 20px 60px;}
+  .intro h1{font-size:clamp(26px,4vw,36px); margin-bottom:8px;}
+  .intro p{color:var(--ink-soft); max-width:640px;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:0 2px 10px rgba(18,23,58,0.05); margin-top:24px;}
+  .card h2{font-size:20px; margin-bottom:6px;}
+  .muted{color:var(--ink-soft); font-size:14px;}
+  label{display:block; font-weight:600; font-size:14px; margin:14px 0 6px;}
+  input{width:100%; font:inherit; padding:11px 13px; border:1.5px solid var(--line); border-radius:10px; background:var(--paper);}
+  input:focus{border-color:var(--navy-soft); outline:none;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; font:inherit; font-weight:700; font-size:15px; padding:12px 20px; border-radius:10px; border:2px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; text-decoration:none;}
+  .btn:disabled{opacity:.55; cursor:not-allowed;}
+  .btn.ghost{background:transparent; color:var(--navy);}
+  .btn.full{width:100%; margin-top:18px;}
+  .linkbtn{background:none; border:none; padding:0; font:inherit; color:var(--navy-soft); text-decoration:underline; cursor:pointer;}
+  .account{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;}
+  .chip{display:inline-block; font-size:12.5px; font-weight:700; padding:3px 10px; border-radius:999px; margin-left:6px; vertical-align:middle;}
+  .chip.ok{background:rgba(31,122,77,0.12); color:var(--green);}
+  .chip.bad{background:rgba(178,58,58,0.10); color:var(--red);}
+  .chip.trial{background:rgba(200,155,60,0.16); color:#8a6517;}
+  .plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:24px;}
+  .plan{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; display:flex; flex-direction:column;}
+  .plan.pro{border:2px solid var(--navy); box-shadow:var(--shadow);}
+  .plan h3{font-size:19px;}
+  .price{font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; color:var(--navy); margin:8px 0 2px;}
+  .price .per{font-size:15px; font-weight:600; color:var(--ink-soft); font-family:'IBM Plex Sans',sans-serif;}
+  .plan ul{list-style:none; padding:0; margin:14px 0 4px; font-size:14.5px;}
+  .plan li{padding:3px 0;}
+  .plan li::before{content:"✓ "; color:var(--green); font-weight:700;}
+  .plan .btn{margin-top:auto;}
+  .plan .spacer{flex:1; min-height:14px;}
+  .msg{margin-top:20px; padding:14px 16px; border-radius:12px; font-size:15px; display:none; white-space:pre-line;}
+  .msg.show{display:block;}
+  .msg.info{background:#eef0fb; color:var(--navy-soft);}
+  .msg.ok{background:rgba(31,122,77,0.10); color:var(--green);}
+  .msg.warn{background:rgba(200,155,60,0.16); color:#7a5812;}
+  .msg.err{background:rgba(178,58,58,0.10); color:var(--red);}
+  .fine{margin-top:28px; font-size:13.5px; color:var(--ink-soft);}
+  .fine p{margin-top:6px;}
+  [hidden]{display:none !important;}
+  @media (max-width:520px){ .card,.plan{padding:18px;} }
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="brand"><span class="mark">✓</span>AttendanceDesk App</a>
+    <button type="button" class="btn ghost" id="signOutBtn" hidden>Sign out</button>
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Renew or upgrade your school's plan</h1>
+    <p>Sign in with your <strong>principal account</strong> from the app. Your plan becomes active in the app as soon as the payment is confirmed. No need to reinstall anything.</p>
+  </div>
+
+  <!-- Sign in -->
+  <section class="card" id="signInCard" hidden>
+    <h2>Principal sign in</h2>
+    <p class="muted">Use the same email and password you use in the AttendanceDesk app. Only the school's principal can pay for a plan.</p>
+    <form id="signInForm" novalidate>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <button type="submit" class="btn full" id="signInBtn">Sign in</button>
+    </form>
+    <p class="muted" style="margin-top:14px;">Forgot your password? Use <em>Forgot Password</em> on the app's login screen.<br>
+      New school? Install the app and register. Your first 6 months are free.</p>
+  </section>
+
+  <!-- Signed in: account + plan status -->
+  <section class="card" id="accountCard" hidden>
+    <div class="account">
+      <div>
+        <h2 id="schoolName"></h2>
+        <p class="muted" id="principalLine"></p>
+      </div>
+      <div style="text-align:right;">
+        <div><strong id="planName"></strong><span class="chip" id="planChip"></span></div>
+        <p class="muted" id="planDetail"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+  <!-- Plans -->
+  <div class="plans" id="plans">
+    <div class="plan pro">
+      <h3>Annual Pro</h3>
+      <p class="muted">One payment for a full year. Does not auto-renew.</p>
+      <div class="price"><span id="annualPrice">₹10,999</span> <span class="per">/ year</span></div>
+      <ul>
+        <li>Unlimited classes &amp; students</li>
+        <li>Every feature, all year</li>
+        <li>Priority WhatsApp support</li>
+      </ul>
+      <div class="spacer"></div>
+      <button type="button" class="btn" id="payAnnualBtn" disabled>Sign in to pay</button>
+    </div>
+    <div class="plan">
+      <h3>Monthly Pro</h3>
+      <p class="muted">Charged every month until you cancel. Cancel any time in the app.</p>
+      <div class="price"><span id="monthlyPrice">₹1,000</span> <span class="per">/ month</span></div>
+      <ul>
+        <li>Unlimited classes &amp; students</li>
+        <li>Every feature</li>
+        <li>Priority WhatsApp support</li>
+      </ul>
+      <div class="spacer"></div>
+      <button type="button" class="btn ghost" id="payMonthlyBtn" disabled>Sign in to subscribe</button>
+    </div>
+  </div>
+
+  <div class="fine">
+    <p>🔒 Payments are processed by Razorpay: UPI, cards, net banking and wallets. We never see or store your card details.</p>
+    <p>Refunds: within 7 days of a payment, for a verified technical issue on our side. See the <a href="Terms_and_Conditions.html">Terms &amp; Conditions</a> (sections 5 and 6).</p>
+    <p>Questions about a payment? Email <a href="mailto:attendancestudentsapp@gmail.com">attendancestudentsapp@gmail.com</a> with your school name and payment ID.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var SUPABASE_URL = 'https://cbntnmmyvvegwcttnspc.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_zKDybvjrqKY20tc_oOGtXg_vOw-qBBv';   // public key, safe in a web page
+  var BACKEND_URL  = 'https://attendance-backend-kzyi.onrender.com';
+  var BRAND        = 'AttendanceDesk App';
+
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, storageKey: 'attendancedesk-renew-auth' },
+  });
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { user: null, profile: null, sub: null, exempt: false, busy: false, paidNow: false };
+
+  // Render's free tier sleeps; start waking it the moment the page opens.
+  fetch(BACKEND_URL + '/').catch(function () {});
+
+  // ── Messages (text only — never HTML) ───────────────────────
+  function say(kind, text) {
+    var m = $('msg');
+    m.className = 'msg show ' + kind;
+    m.textContent = text;
+  }
+  function clearMsg() { $('msg').className = 'msg'; $('msg').textContent = ''; }
+
+  function inr(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+  function fmtDate(d) {
+    if (!d) return '';
+    return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // ── Backend calls (Bearer token, timeout) ───────────────────
+  async function api(path, options, timeoutMs) {
+    options = options || {};
+    var headers = { 'Content-Type': 'application/json' };
+    var s = (await sb.auth.getSession()).data.session;
+    if (s) headers.Authorization = 'Bearer ' + s.access_token;
+    var ctrl = new AbortController();
+    var t = setTimeout(function () { ctrl.abort(); }, timeoutMs || 60000);
+    try {
+      var res = await fetch(BACKEND_URL + path, {
+        method: options.method || 'GET',
+        headers: headers,
+        body: options.body,
+        signal: ctrl.signal,
+      });
+      var data = {};
+      try { data = await res.json(); } catch (e) { /* non-JSON error page */ }
+      return { status: res.status, data: data };
+    } catch (e) {
+      if (e.name === 'AbortError') throw new Error('SERVER_TIMEOUT');
+      throw new Error('NETWORK');
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  // ── Prices (plans are publicly readable) ────────────────────
+  sb.from('plans').select('name, price_inr').in('name', ['Annual Pro', 'Monthly Pro']).then(function (r) {
+    (r.data || []).forEach(function (p) {
+      if (!p.price_inr) return;
+      if (p.name === 'Annual Pro')  $('annualPrice').textContent  = inr(p.price_inr);
+      if (p.name === 'Monthly Pro') $('monthlyPrice').textContent = inr(p.price_inr);
+    });
+  });
+
+  // ── Screen state ────────────────────────────────────────────
+  function showSignedOut() {
+    state.user = state.profile = state.sub = null;
+    state.exempt = false;
+    $('signInCard').hidden = false;
+    $('accountCard').hidden = true;
+    $('signOutBtn').hidden = true;
+    setButtons();
+  }
+
+  function hasActivePlan() {
+    if (state.paidNow || state.exempt) return true;
+    return !!(state.sub && state.sub.premiumActive && !state.sub.isTrial);
+  }
+
+  function setButtons() {
+    var a = $('payAnnualBtn'), m = $('payMonthlyBtn');
+    if (!state.profile) {
+      a.disabled = m.disabled = true;
+      a.textContent = 'Sign in to pay';
+      m.textContent = 'Sign in to subscribe';
+      return;
+    }
+    var locked = state.busy || hasActivePlan();
+    a.disabled = m.disabled = locked;
+    if (hasActivePlan()) {
+      a.textContent = m.textContent = 'Plan active';
+    } else {
+      a.textContent = state.busy ? 'Please wait…' : 'Pay ' + $('annualPrice').textContent;
+      m.textContent = state.busy ? 'Please wait…' : 'Subscribe ' + $('monthlyPrice').textContent + '/month';
+    }
+  }
+
+  function renderAccount() {
+    var p = state.profile, s = state.sub;
+    $('schoolName').textContent = p.school_name || 'Your school';
+    $('principalLine').textContent = (p.name ? p.name + ' · ' : '') + (p.email || state.user.email || '');
+
+    var chip = $('planChip'), name = '', detail = '', kind = 'ok', label = 'Active';
+    if (state.exempt) {
+      name = 'Free full access'; detail = 'No payment needed for your school.';
+    } else if (!s) {
+      name = 'No plan'; kind = 'bad'; label = 'Expired';
+    } else {
+      name = s.planName || (s.isTrial ? 'Free Trial' : 'Plan');
+      var end = s.currentPeriodEnd;
+      if (s.premiumActive) {
+        kind = s.isTrial ? 'trial' : 'ok';
+        label = s.isTrial ? 'Trial' : 'Active';
+        if (s.billingType === 'recurring') {
+          detail = s.cancelAtCycleEnd
+            ? 'Cancelled. Access continues until ' + fmtDate(end) + '.'
+            : 'Renews automatically' + (s.nextBillingDate ? ' on ' + fmtDate(s.nextBillingDate) : '') + '.';
+        } else if (end) {
+          detail = (s.isTrial ? 'Free trial ends on ' : 'Active until ') + fmtDate(end) + '.';
+        }
+      } else {
+        kind = 'bad';
+        label = s.status === 'cancelled' ? 'Cancelled' : 'Expired';
+        detail = 'Attendance is view-only in the app until a plan is active.';
+      }
+    }
+    $('planName').textContent = name;
+    chip.className = 'chip ' + kind;
+    chip.textContent = label;
+    $('planDetail').textContent = detail;
+
+    $('signInCard').hidden = true;
+    $('accountCard').hidden = false;
+    $('signOutBtn').hidden = false;
+    setButtons();
+  }
+
+  // ── Load the signed-in principal's school + plan ────────────
+  var REFUSED = {
+    FORBIDDEN_ROLE:       'Only the school\'s principal can pay for a plan. Please sign in with the principal account.',
+    NOT_SCHOOL_PRINCIPAL: 'This account is not the principal of a school. Please sign in with the principal account.',
+    PROFILE_NOT_FOUND:    'We couldn\'t find an AttendanceDesk profile for this account. Register your school in the app first.',
+    NO_SCHOOL:            'This account isn\'t linked to a school yet.',
+  };
+
+  async function loadAccount(silent) {
+    if (!silent) say('info', 'Checking your school\'s plan… The first check can take up to a minute while our server wakes up.');
+    var user = (await sb.auth.getUser()).data.user;
+    if (!user) { showSignedOut(); clearMsg(); return; }
+    state.user = user;
+
+    var r;
+    try {
+      r = await api('/subscription-status', {}, 90000);
+    } catch (e) {
+      say('err', e.message === 'SERVER_TIMEOUT'
+        ? 'Our server is taking too long to wake up. Please refresh this page in a minute.'
+        : 'Could not reach our server. Check your internet connection and refresh the page.');
+      return;
+    }
+    if (r.status === 401 || r.status === 403 || r.status === 400) {
+      var reason = r.data && r.data.reason;
+      await sb.auth.signOut();
+      showSignedOut();
+      say('err', REFUSED[reason] || 'Your session has ended. Please sign in again.');
+      return;
+    }
+    if (!r.data || !r.data.success) {
+      say('err', 'Could not load your plan. Please refresh the page in a minute.');
+      return;
+    }
+    state.sub = r.data.subscription || null;
+
+    var prof = await sb.from('user_profiles')
+      .select('name, email, mobile, school_name, school_id').eq('id', user.id).maybeSingle();
+    state.profile = prof.data || { email: user.email };
+    if (state.profile.school_id) {
+      var sch = await sb.from('schools').select('name, is_exempt').eq('id', state.profile.school_id).maybeSingle();
+      if (sch.data) {
+        state.exempt = sch.data.is_exempt === true;
+        if (!state.profile.school_name) state.profile.school_name = sch.data.name;
+      }
+    }
+    renderAccount();
+    if (!silent) {
+      if (hasActivePlan()) {
+        say('ok', state.exempt
+          ? 'Your school has free full access. Nothing to pay.'
+          : 'Your Pro plan is active. You can renew here once it ends.');
+      } else {
+        clearMsg();
+      }
+    }
+  }
+
+  // ── Sign in / out ───────────────────────────────────────────
+  $('signInForm').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    var email = $('email').value.trim(), password = $('password').value;
+    if (!email || !password) { say('err', 'Enter your email and password.'); return; }
+    $('signInBtn').disabled = true;
+    $('signInBtn').textContent = 'Signing in…';
+    var res = await sb.auth.signInWithPassword({ email: email, password: password });
+    $('signInBtn').disabled = false;
+    $('signInBtn').textContent = 'Sign in';
+    if (res.error) {
+      say('err', /invalid/i.test(res.error.message)
+        ? 'Wrong email or password.'
+        : 'Could not sign in: ' + res.error.message);
+      return;
+    }
+    $('password').value = '';
+    await loadAccount(false);
+  });
+
+  $('signOutBtn').addEventListener('click', async function () {
+    await sb.auth.signOut();
+    showSignedOut();
+    clearMsg();
+  });
+
+  function setBusy(b) { state.busy = b; setButtons(); }
+
+  function checkoutOptions(extra) {
+    var p = state.profile || {};
+    return Object.assign({
+      name: BRAND,
+      currency: 'INR',
+      prefill: { name: p.name || '', email: p.email || '', contact: p.mobile || '' },
+      notes: { school_name: p.school_name || '' },
+      theme: { color: '#12173A' },
+      modal: { ondismiss: function () { setBusy(false); } },
+    }, extra);
+  }
+
+  async function getKey() {
+    var r = await api('/get-key', {}, 90000);
+    if (!r.data || !r.data.keyId) throw new Error('KEY_FETCH_FAILED');
+    return r.data.keyId;
+  }
+
+  function startError(e) {
+    setBusy(false);
+    if (e && e.message === 'SERVER_TIMEOUT') {
+      say('warn', 'Our payment server is waking up. Please wait 30 seconds and try again. You have not been charged.');
+    } else {
+      say('err', 'Could not start the payment. Please try again in a minute. You have not been charged.');
+    }
+  }
+
+  // ── Annual Pro (one-time Razorpay Order) ────────────────────
+  var REJECTED = ['MISSING_FIELDS', 'INVALID_SIGNATURE', 'ORDER_NOT_YOURS', 'ORDER_MISMATCH', 'AMOUNT_MISMATCH', 'PAYMENT_NOT_CAPTURED'];
+
+  $('payAnnualBtn').addEventListener('click', async function () {
+    if (state.busy || hasActivePlan()) return;
+    setBusy(true);
+    say('info', 'Preparing your payment…');
+    var key, order;
+    try {
+      var both = await Promise.all([getKey(), api('/create-order', { method: 'POST', body: '{}' }, 90000)]);
+      key = both[0];
+      var o = both[1];
+      if (!o.data || !o.data.success) {
+        setBusy(false);
+        if (o.data && o.data.reason === 'ACTIVE_RECURRING_SUBSCRIPTION') {
+          say('warn', 'Your school has a Monthly Pro plan that renews automatically. Cancel it in the app (Settings → Manage Subscription) first, then you can switch to Annual Pro. You were not charged.');
+        } else {
+          say('err', 'Could not start the payment. Please try again in a minute. You were not charged.');
+        }
+        return;
+      }
+      order = o.data.order;
+    } catch (e) { startError(e); return; }
+
+    clearMsg();
+    var rzp = new Razorpay(checkoutOptions({
+      key: key,
+      amount: order.amount,
+      order_id: order.id,
+      description: 'Annual Pro: 1 year',
+      handler: function (resp) { verifyAnnual(resp); },
+    }));
+    rzp.on('payment.failed', function (r) {
+      say('err', 'Payment failed: ' + ((r && r.error && r.error.description) || 'please try again or use another payment method.'));
+    });
+    rzp.open();
+  });
+
+  async function verifyAnnual(resp) {
+    say('info', 'Payment received. Confirming it with our server… Please don\'t close this page.');
+    var r;
+    try {
+      r = await api('/verify-payment', {
+        method: 'POST',
+        body: JSON.stringify({
+          razorpay_order_id: resp.razorpay_order_id,
+          razorpay_payment_id: resp.razorpay_payment_id,
+          razorpay_signature: resp.razorpay_signature,
+        }),
+      }, 120000);
+    } catch (e) {
+      setBusy(false);
+      say('warn', 'Your payment may have gone through, but we could not confirm it yet.\nPlease do NOT pay again. Refresh this page in a minute to check your plan, or email us with payment ID ' + resp.razorpay_payment_id + '.');
+      return;
+    }
+    if (r.data && r.data.success) {
+      state.paidNow = true;
+      setBusy(false);
+      say('ok', '🎉 Annual Pro is active' + (r.data.expiresAt ? ' until ' + fmtDate(r.data.expiresAt) : '') + '.\nPayment ID: ' + resp.razorpay_payment_id + '\nOpen the app. It picks up the new plan automatically (reopen it if it was already open).');
+      loadAccount(true);
+      return;
+    }
+    setBusy(false);
+    if (REJECTED.indexOf(r.data && r.data.reason) !== -1) {
+      say('err', 'This payment could not be accepted. If money was deducted, it will be refunded automatically by your bank. Payment ID: ' + resp.razorpay_payment_id);
+    } else {
+      say('warn', 'Your payment went through, but we could not activate the plan automatically.\nPlease do NOT pay again. Email us with payment ID ' + resp.razorpay_payment_id + ' and we will activate it.');
+    }
+  }
+
+  // ── Monthly Pro (auto-renewing Razorpay Subscription) ───────
+  $('payMonthlyBtn').addEventListener('click', async function () {
+    if (state.busy || hasActivePlan()) return;
+    setBusy(true);
+    say('info', 'Preparing your subscription…');
+    var key, subId;
+    try {
+      var both = await Promise.all([getKey(), api('/create-subscription', { method: 'POST', body: '{}' }, 90000)]);
+      key = both[0];
+      var c = both[1];
+      if (!c.data || !c.data.success) {
+        setBusy(false);
+        var reason = c.data && c.data.reason;
+        say('err', (reason === 'PLAN_NOT_CONFIGURED' || reason === 'PLAN_NOT_FOUND')
+          ? 'The monthly plan isn\'t available right now. Please choose Annual Pro, or email us.'
+          : 'Could not start the subscription. Please try again in a minute. You were not charged.');
+        return;
+      }
+      subId = c.data.subscriptionId;
+    } catch (e) { startError(e); return; }
+
+    clearMsg();
+    var rzp = new Razorpay(checkoutOptions({
+      key: key,
+      subscription_id: subId,
+      description: 'Monthly Pro: renews every month',
+      handler: function (resp) { verifyMonthly(resp); },
+    }));
+    rzp.on('payment.failed', function (r) {
+      say('err', 'Payment failed: ' + ((r && r.error && r.error.description) || 'please try again or use another payment method.'));
+    });
+    rzp.open();
+  });
+
+  async function verifyMonthly(resp) {
+    say('info', 'Payment received. Confirming it with our server… Please don\'t close this page.');
+    var r;
+    try {
+      r = await api('/verify-subscription-payment', {
+        method: 'POST',
+        body: JSON.stringify({
+          razorpay_payment_id: resp.razorpay_payment_id,
+          razorpay_subscription_id: resp.razorpay_subscription_id,
+          razorpay_signature: resp.razorpay_signature,
+        }),
+      }, 120000);
+    } catch (e) {
+      setBusy(false);
+      say('warn', 'Your payment may have gone through, but we could not confirm it yet.\nPlease do NOT pay again. Refresh this page in a minute to check your plan, or email us with payment ID ' + resp.razorpay_payment_id + '.');
+      return;
+    }
+    setBusy(false);
+    if (r.data && r.data.success) {
+      state.paidNow = true;
+      setButtons();
+      say('ok', '✅ Monthly Pro payment received. Activation takes up to a minute.\nPayment ID: ' + resp.razorpay_payment_id + '\nYou can cancel any time in the app (Settings → Manage Subscription).');
+      setTimeout(function () { loadAccount(true); }, 15000);
+      return;
+    }
+    say('warn', 'We could not confirm this subscription payment automatically.\nPlease do NOT pay again. Email us with payment ID ' + resp.razorpay_payment_id + '.');
+  }
+
+  // ── Start ───────────────────────────────────────────────────
+  sb.auth.getSession().then(function (r) {
+    if (r.data.session) loadAccount(false);
+    else showSignedOut();
+  });
+})();
+</script>
+</body>
+</html>
