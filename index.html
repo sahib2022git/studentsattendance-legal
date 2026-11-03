@@ -225,8 +225,8 @@
   .shot-wrap{display:flex; flex-direction:column;}
 
   /* PRICING ---------------------------------------------------------------*/
-  .price-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
-  @media (max-width:760px){ .price-grid{grid-template-columns:1fr;} }
+  .price-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; align-items:stretch;}
+  @media (max-width:980px){ .price-grid{grid-template-columns:1fr; max-width:560px; margin:0 auto;} }
   .price-card{
     background:#fff; border:1px solid var(--line); border-radius:18px; padding:34px;
     display:flex; flex-direction:column;
@@ -503,7 +503,7 @@
           <h3>Annual Pro</h3>
           <p class="sub">For the whole school, all year</p>
           <div class="price-amt">₹10,999 <span>/ year</span></div>
-          <p class="price-breakdown">About ₹917 a month — just ₹30/day, less than a cup of tea. Prefer monthly? Monthly Pro is ₹1,000/month, cancel any time. Principals pay on this website after registering the school in the app.</p>
+          <p class="price-breakdown">About ₹917 a month — just ₹30/day, less than a cup of tea. One payment, no auto-renewal.</p>
           <ul class="price-list">
             <li><span class="stamp p">✓</span> Unlimited classes &amp; students</li>
             <li><span class="stamp p">✓</span> WhatsApp absence alerts</li>
@@ -514,7 +514,22 @@
           </ul>
           <a class="btn solid" href="renew.html">Upgrade or renew</a>
         </div>
+
+        <div class="price-card reveal">
+          <h3>Monthly Pro</h3>
+          <p class="sub">Pay month by month</p>
+          <div class="price-amt">₹1,000 <span>/ month</span></div>
+          <p class="price-breakdown">Renews automatically every month. Cancel any time in the app — you keep Pro until the month you paid for ends.</p>
+          <ul class="price-list">
+            <li><span class="stamp p">✓</span> Unlimited classes &amp; students</li>
+            <li><span class="stamp p">✓</span> Every Annual Pro feature</li>
+            <li><span class="stamp p">✓</span> Priority WhatsApp support</li>
+            <li><span class="stamp p">✓</span> No long commitment</li>
+          </ul>
+          <a class="btn ghost" href="renew.html">Subscribe monthly</a>
+        </div>
       </div>
+      <p class="price-note" style="text-align:center; margin-top:22px; font-size:14px; color:var(--ink-soft);">Register your school in the app first (free for 6 months), then the principal upgrades on this website.</p>
     </div>
   </section>
 
