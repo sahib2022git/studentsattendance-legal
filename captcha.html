@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Security Check — Attendance Desk</title>
+  <!--
+    Shown inside the Attendance Desk app (WebView) before a new account is
+    registered. Cloudflare Turnstile checks that a person, not a script, is
+    signing up. The token goes back to the app, the app sends it with the
+    sign-up, and the Supabase "before-user-created" hook verifies it with
+    Cloudflare before the account is created. Nothing here is secret: the
+    site key is public by design (the secret key lives only in Supabase).
+  -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: #ffffff;
+      color: #1a1a2e;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .box { width: 100%; max-width: 360px; text-align: center; }
+    h1 { font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    p  { font-size: 0.9rem; color: #4b5563; line-height: 1.5; margin-bottom: 18px; }
+    #widget { display: flex; justify-content: center; min-height: 70px; }
+    #status { margin-top: 14px; font-size: 0.85rem; color: #6b7280; min-height: 1.3em; }
+    #status.error { color: #b91c1c; }
+    #status.ok { color: #15803d; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Quick security check</h1>
+    <p>This stops robots from creating fake accounts.</p>
+    <div id="widget"></div>
+    <div id="status">Loading…</div>
+  </div>
+
+  <script>
+    // Public site key of the Cloudflare Turnstile widget for attendancedesk.com.
+    var SITE_KEY = '0x4AAAAAAF4ojgZZfT6tdJY8';
+
+    var statusEl = document.getElementById('status');
+    function setStatus(text, cls) {
+      statusEl.textContent = text;
+      statusEl.className = cls || '';
+    }
+
+    // Messages to the app. Outside the app there is no ReactNativeWebView,
+    // so the page just shows the result.
+    function send(msg) {
+      if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+        window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+        return true;
+      }
+      return false;
+    }
+
+    window.onTurnstileLoad = function () {
+      setStatus('');
+      turnstile.render('#widget', {
+        sitekey: SITE_KEY,
+        action: 'signup',
+        theme: 'light',
+        callback: function (token) {
+          setStatus('Verified ✓', 'ok');
+          if (!send({ type: 'token', token: token })) {
+            setStatus('Verified. Please continue in the Attendance Desk app.', 'ok');
+          }
+        },
+        'expired-callback': function () {
+          setStatus('The check expired. Please try again.', 'error');
+          send({ type: 'expired' });
+        },
+        'timeout-callback': function () {
+          setStatus('The check timed out. Please try again.', 'error');
+          send({ type: 'expired' });
+        },
+        'error-callback': function (code) {
+          setStatus('The check could not load. Please check your internet connection.', 'error');
+          send({ type: 'error', code: String(code || '') });
+        }
+      });
+      send({ type: 'ready' });
+    };
+
+    // If Cloudflare's script never loads (offline, blocked), tell the app.
+    setTimeout(function () {
+      if (typeof turnstile === 'undefined') {
+        setStatus('The check could not load. Please check your internet connection.', 'error');
+        send({ type: 'error', code: 'script-not-loaded' });
+      }
+    }, 15000);
+  </script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit" async defer></script>
+</body>
+</html>
